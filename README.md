@@ -1,27 +1,53 @@
-# AngularSchematic
+# Feature-focused Angular Schematics
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.2.
+Schematics that I use in my Angular projects, following a feature-focused structure:
 
-## Development server
+- My app is split in features, layout and shared.
+- Each feature has:
+  - **data-access:** Services and shared state for the feature.
+  - **feature:** Feature smart component. I use suffix `page` instead of `component` so it is easier to recognize it is a smart component.
+  - **ui:** Dumb component for UI. (buttons, lists, tables, inputs, etc.)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## What does it do?
 
-## Code scaffolding
+It generates boilerplate folders/files for a new feature:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Creates a folder with the name of the feature. Inside that folder it creates:
+  - data-access folder, with a service for the feature. it also injects http for the service.
+  - feature folder, with the component for the feature with the feature service injected, html file for the component and a routes archive for the feature.
+- Updates tsconfig paths to use `@feature-name` instead of relative imports
+- Adds the new route to `main.ts` `ROUTES` constant. In some projects I didn't have it, I was writing the routes directly on the `provideRouter` so I had to create the `ROUTES` const. **Important**: Since in all my projects I have a `not-found` page and a wildcard route (`**`), the schematics uses adds it in the position of the wildcard - 2, so if you don't have those, you can edit the `feature/src/feature/index.ts` file.
 
-## Build
+## How to use it?
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Clone this project:
 
-## Running unit tests
+    git clone https://github.com/mateuscechetto/angular-feature-schematics.git
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Go to feature schematic folder:
 
-## Running end-to-end tests
+    cd feature
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Build the schematic:
 
-## Further help
+    npm run build
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Link it so it can be used in other projects:
+
+    npm link
+
+In the angular project you link to this schematic:
+
+    npm link <path_for_the_schematic>
+
+_Note:_ it is _likely_ that it look like `../../angular-feature-schematics/feature`;
+
+Use the schematic whenever you want to add a new feature:
+
+    ng generate feature:generate-feature --name=<feature_name>
+
+## More about Angular schematics:
+
+- [Playing with Schematics — Angular](https://nado261.medium.com/schematics-angular-5110c008f0f)
+- [Generating code using schematics](https://angular.dev/tools/cli/schematics)
+- [Schematics authoring](https://angular.dev/tools/cli/schematics-authoring)

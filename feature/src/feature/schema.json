@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "GenerateFeatureSchema",
+  "title": "Generate Feature Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of all templates"
+    },
+    "path": {
+      "type": "string",
+      "default": "src/app/",
+      "description": "Path to create all templates"
+    }
+  },
+  "required": ["name"]
+}
